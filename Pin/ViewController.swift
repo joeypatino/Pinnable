@@ -9,105 +9,117 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		setupPins()
+		
+		layoutViewsWithPin()
 	}
+	
+	private func layoutViewsWithPin(){
+		
+		/**
+		* Relative Margins
+		* Creates and adds views using margins that are relative to
+		* the size of their superview. Relative margin values are
+		* expressed in percentage of the superview's bounds.
+		*/
+		let top_1 = generateView()
+		top_1.pin(.width, to: 80)
+		top_1.pin(.height, to: 80)
+		top_1.pin(.top, toView: view, margin: 0.10, relative: true)
+		top_1.pin(onAxis: .x, inView: view)
+		
+		let bot_1 = generateView()
+		bot_1.pin(.width, to: 60)
+		bot_1.pin(.height, to: 60)
+		bot_1.pin(.bottom, toView: view, margin: 0.20, relative:true)
+		bot_1.pin(onAxis: .x, inView: view)
+		
+		let lead_1 = generateView()
+		lead_1.pin(.width, to: 40)
+		lead_1.pin(.height, to: 40)
+		lead_1.pin(.leading, toView: view, margin: 0.30, relative:true)
+		lead_1.pin(onAxis: .y, inView: view)
+		
+		let trail_1 = generateView()
+		trail_1.pin(.width, to: 20)
+		trail_1.pin(.height, to: 20)
+		trail_1.pin(.trailing, toView: view, margin: 0.40, relative:true)
+		trail_1.pin(onAxis: .y, inView: view)
+		
+		/**
+		* Absolute Margins
+		* Create and add views using absolute margins. Margins are expressed
+		* in points..
+		*/
+		let top_2 = generateView()
+		top_2.pin(.width, to: 20)
+		top_2.pin(.height, to: 20)
+		top_2.pin(.top, toView: view, margin: 40)
+		top_2.pin(onAxis: .x, inView: view)
+		
+		let bot_2 = generateView()
+		bot_2.pin(.width, to: 40)
+		bot_2.pin(.height, to: 40)
+		bot_2.pin(.bottom, toView: view, margin: 30)
+		bot_2.pin(onAxis: .x, inView: view)
+		
+		let lead_2 = generateView()
+		lead_2.pin(.width, to: 60)
+		lead_2.pin(.height, to: 60)
+		lead_2.pin(.leading, toView: view, margin: 40)
+		lead_2.pin(onAxis: .y, inView: view)
+		
+		let trail_2 = generateView()
+		trail_2.pin(.width, to: 80)
+		trail_2.pin(.height, to: 80)
+		trail_2.pin(.trailing, toView: view, margin: 50)
+		trail_2.pin(onAxis: .y, inView: view)
+		
+		/**
+		* Pinned to random views
+		* Demonstrating how to pin to arbitrary views and
+		* to arbitrary view edges or axis'
 
-	private func setupPins(){
-		let top = UIView()
-		top.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
-		view.addSubview(top)
-		top.pin(dimension: .width, to: 30)
-		top.pin(dimension: .height, to: 30)
-		top.pin(edge: .top, toView: view, margin: 0.25, isRelative: true)
-		top.pin(centered: .horizontal, inView: view)
-		
-		let bot = UIView()
-		bot.backgroundColor = UIColor.green.withAlphaComponent(0.5)
-		view.addSubview(bot)
-		bot.pin(dimension: .width, to: 40)
-		bot.pin(dimension: .height, to: 40)
-		bot.pin(edge: .bottom, toView: view, margin: 0.25, isRelative:true)
-		bot.pin(centered: .horizontal, inView: view)
-		
-		let lead = UIView()
-		lead.backgroundColor = UIColor.purple.withAlphaComponent(0.5)
-		view.addSubview(lead)
-		lead.pin(dimension: .width, to: 50)
-		lead.pin(dimension: .height, to: 50)
-		lead.pin(edge: .leading, toView: view, margin: 0.25, isRelative:true)
-		lead.pin(centered: .vertical, inView: view)
-		
-		let trail = UIView()
-		trail.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
-		view.addSubview(trail)
-		trail.pin(dimension: .width, to: 60)
-		trail.pin(dimension: .height, to: 60)
-		trail.pin(edge: .trailing, toView: view, margin: 0.25, isRelative:true)
-		trail.pin(centered: .vertical, inView: view)
-		
-		
-		
-		
-		let top2 = UIView()
-		top2.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
-		view.addSubview(top2)
-		top2.pin(dimension: .width, to: 60)
-		top2.pin(dimension: .height, to: 60)
-		top2.pin(edge: .top, toView: view, margin: 80, isRelative:false)
-		top2.pin(centered: .horizontal, inView: view)
-		
-		let bot2 = UIView()
-		bot2.backgroundColor = UIColor.green.withAlphaComponent(0.5)
-		view.addSubview(bot2)
-		bot2.pin(dimension: .width, to: 50)
-		bot2.pin(dimension: .height, to: 50)
-		bot2.pin(edge: .bottom, toView: view, margin: 80, isRelative:false)
-		bot2.pin(centered: .horizontal, inView: view)
-		
-		let lead2 = UIView()
-		lead2.backgroundColor = UIColor.purple.withAlphaComponent(0.5)
-		view.addSubview(lead2)
-		lead2.pin(dimension: .width, to: 40)
-		lead2.pin(dimension: .height, to: 40)
-		lead2.pin(edge: .leading, toView: view, margin: 80, isRelative:false)
-		lead2.pin(centered: .vertical, inView: view)
-		
-		let trail2 = UIView()
-		trail2.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
-		view.addSubview(trail2)
-		trail2.pin(dimension: .width, to: 30)
-		trail2.pin(dimension: .height, to: 30)
-		trail2.pin(edge: .trailing, toView: view, margin: 80, isRelative:false)
-		trail2.pin(centered: .vertical, inView: view)
-		
-		
-		let op1 = UIView()
-		op1.backgroundColor = .black
-		view.addSubview(op1)
-		op1.pin(dimension: .width, to: 50)
-		op1.pin(dimension: .height, to: 50)
-		op1.pin(edge: .top, toView: top, toAnchor: PinEdge.bottom, margin: 0.10, isRelative:true)
-		op1.pin(centered: .horizontal, inView: view)
-		
-		
-		let op2 = UIView()
-		op2.backgroundColor = .green
-		view.addSubview(op2)
-		op2.pin(dimension: .width, to: 70)
-		op2.pin(dimension: .height, to: 70)
-		op2.pin(edge: .trailing, toView: op1, toAnchor: PinEdge.leading, margin: 90, isRelative:false)
-		op2.pin(centered: .vertical, inView: view)
-		
-		let op3 = UIView()
-		op3.backgroundColor = .black
-		view.addSubview(op3)
-		op3.pin(dimension: .width, to: 40)
-		op3.pin(dimension: .height, to: 40)
-		op3.pin(edge: .bottom, toView: op2, toAnchor: PinEdge.top, margin: 40)
-		op3.pin(edge: .leading, toView: op2, toAnchor: PinEdge.leading, margin: 0)
+		let r_1 = generateView()
+		r_1.pin(.width, to: 50)
+		r_1.pin(.height, to: 50)
+		r_1.pin(.top, toView: top_1, toAnchor: .bottom, margin: 0.20, relative:true)
+		r_1.pin(onAxis: .x, inView: view)
+
+		let r_2 = generateView()
+		r_2.pin(.width, to: 50)
+		r_2.pin(.height, to: 50)
+		r_2.pin(.leading, toView: r_1, toAnchor: .leading, margin: 20)
+		r_2.pin(onAxis: .y, inView: view)
+
+		let r_3 = generateView()
+		r_3.pin(.width, to: 50)
+		r_3.pin(.height, to: 50)
+		r_3.pin(.bottom, toView: r_2, toAnchor: .top, margin: 10)
+		r_3.pin(.leading, toView: r_2, toAnchor: .leading, margin: 0)
+		*/
+	}
+	
+	private func generateView() -> UIView {
+		let randomView = UIView()
+		addGesture(toView: randomView)
+		randomView.backgroundColor = UIColor.random()
+		view.addSubview(randomView)
+		return randomView
+	}
+	
+	/**
+	* Add a gesture to test out removing the view and ensuring
+	* that the margin views (IN RED) are also removed and dealloc'd
+	*/
+	private func addGesture(toView view: UIView) {
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTouched))
+		view.addGestureRecognizer(tapGesture)
+	}
+	
+	@objc private func viewTouched(gesture:UITapGestureRecognizer) {
+		gesture.view?.removeFromSuperview()
 	}
 }
-
