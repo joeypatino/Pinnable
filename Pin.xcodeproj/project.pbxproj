@@ -13,7 +13,7 @@
 		D4BB13D81F82AAD60079BB6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4BB13D71F82AAD60079BB6E /* Assets.xcassets */; };
 		D4BB13DB1F82AAD60079BB6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4BB13D91F82AAD60079BB6E /* LaunchScreen.storyboard */; };
 		D4BB13E61F82AAD70079BB6E /* PinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BB13E51F82AAD70079BB6E /* PinTests.swift */; };
-		D4BB13F21F82AB8C0079BB6E /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BB13F11F82AB6D0079BB6E /* Pin.swift */; };
+		D4BB13F61F82AEC40079BB6E /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BB13F51F82AEC40079BB6E /* Pin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +37,7 @@
 		D4BB13E11F82AAD70079BB6E /* PinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BB13E51F82AAD70079BB6E /* PinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinTests.swift; sourceTree = "<group>"; };
 		D4BB13E71F82AAD70079BB6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D4BB13F11F82AB6D0079BB6E /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
+		D4BB13F51F82AEC40079BB6E /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,9 +79,9 @@
 		D4BB13CF1F82AAD60079BB6E /* Pin */ = {
 			isa = PBXGroup;
 			children = (
-				D4BB13F01F82AB6D0079BB6E /* Pin */,
 				D4BB13D01F82AAD60079BB6E /* AppDelegate.swift */,
 				D4BB13D21F82AAD60079BB6E /* ViewController.swift */,
+				D4BB13F51F82AEC40079BB6E /* Pin.swift */,
 				D4BB13D41F82AAD60079BB6E /* Main.storyboard */,
 				D4BB13D71F82AAD60079BB6E /* Assets.xcassets */,
 				D4BB13D91F82AAD60079BB6E /* LaunchScreen.storyboard */,
@@ -97,14 +97,6 @@
 				D4BB13E71F82AAD70079BB6E /* Info.plist */,
 			);
 			path = PinTests;
-			sourceTree = "<group>";
-		};
-		D4BB13F01F82AB6D0079BB6E /* Pin */ = {
-			isa = PBXGroup;
-			children = (
-				D4BB13F11F82AB6D0079BB6E /* Pin.swift */,
-			);
-			path = Pin;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,7 +202,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4BB13F21F82AB8C0079BB6E /* Pin.swift in Sources */,
+				D4BB13F61F82AEC40079BB6E /* Pin.swift in Sources */,
 				D4BB13D31F82AAD60079BB6E /* ViewController.swift in Sources */,
 				D4BB13D11F82AAD60079BB6E /* AppDelegate.swift in Sources */,
 			);
