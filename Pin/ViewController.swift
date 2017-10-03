@@ -23,30 +23,31 @@ class ViewController: UIViewController {
 		* Creates and adds views using margins that are relative to
 		* the size of their superview. Relative margin values are
 		* expressed in percentage of the superview's bounds.
-		*/
+
 		let top_1 = generateView()
-		top_1.pin(.width, to: 80)
-		top_1.pin(.height, to: 80)
-		top_1.pin(.top, toView: view, margin: 0.10, relative: true)
+		top_1.pin(.width, to: 40)
+		top_1.pin(.height, to: 40)
+		top_1.pin(.top, toView: view, margin: 0.20, relative: true)
 		top_1.pin(onAxis: .x, inView: view)
 		
 		let bot_1 = generateView()
-		bot_1.pin(.width, to: 60)
-		bot_1.pin(.height, to: 60)
+		bot_1.pin(.width, to: 40)
+		bot_1.pin(.height, to: 40)
 		bot_1.pin(.bottom, toView: view, margin: 0.20, relative:true)
 		bot_1.pin(onAxis: .x, inView: view)
 		
 		let lead_1 = generateView()
 		lead_1.pin(.width, to: 40)
 		lead_1.pin(.height, to: 40)
-		lead_1.pin(.leading, toView: view, margin: 0.30, relative:true)
+		lead_1.pin(.leading, toView: view, margin: 0.20, relative:true)
 		lead_1.pin(onAxis: .y, inView: view)
 		
 		let trail_1 = generateView()
-		trail_1.pin(.width, to: 20)
-		trail_1.pin(.height, to: 20)
-		trail_1.pin(.trailing, toView: view, margin: 0.40, relative:true)
+		trail_1.pin(.width, to: 40)
+		trail_1.pin(.height, to: 40)
+		trail_1.pin(.trailing, toView: view, margin: 0.20, relative:true)
 		trail_1.pin(onAxis: .y, inView: view)
+		*/
 		
 		/**
 		* Absolute Margins
@@ -119,6 +120,18 @@ class ViewController: UIViewController {
 		r_5.pin(.leading, toView: view, margin: 0.05, relative:true)
 		r_5.pin(.top, toView: view, margin: 0.05, relative:true)
 		r_5.pin(.trailing, toView: view, margin: 0.05, relative:true)
+
+		let r_6 = generateView()
+		r_6.pin(.width, to: 25)
+		r_6.pin(.height, to: 25)
+		r_6.pin(.centerX, toView: bot_1, toAnchor: .centerX, margin: 40)
+		r_6.pin(.bottom, toView: bot_1, toAnchor: .top, margin: 0)
+
+		// Aspect ratios
+		let r_7 = generateView()
+		r_7.pin(.width, to: 0.5, ofView: view, maintainAspect: 16.0/9.0)
+		r_7.pin(.centerX, toView: view, toAnchor: .centerX, margin: 0)
+		r_7.pin(.bottom, toView: view, margin: 100)
 
 		*/
 		
