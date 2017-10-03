@@ -52,7 +52,7 @@ class ViewController: UIViewController {
 		* Absolute Margins
 		* Create and add views using absolute margins. Margins are expressed
 		* in points..
-		*/
+
 		let top_2 = generateView()
 		top_2.pin(.width, to: 20)
 		top_2.pin(.height, to: 20)
@@ -76,6 +76,7 @@ class ViewController: UIViewController {
 		trail_2.pin(.height, to: 80)
 		trail_2.pin(.trailing, toView: view, margin: 50)
 		trail_2.pin(onAxis: .y, inView: view)
+		*/
 		
 		/**
 		* Pinned to random views
@@ -99,6 +100,58 @@ class ViewController: UIViewController {
 		r_3.pin(.height, to: 50)
 		r_3.pin(.bottom, toView: r_2, toAnchor: .top, margin: 10)
 		r_3.pin(.leading, toView: r_2, toAnchor: .leading, margin: 0)
+		
+		let r_4 = generateView()
+		r_4.backgroundColor = .black
+		r_4.pin(.width, to: 50)
+		r_4.pin(.height, to: 50)
+		r_4.pin(.leading, toView: top_1, toAnchor: .centerX, margin: 0)
+		r_4.pin(.top, toView: top_1, toAnchor: .centerY, margin: 100)
+		
+		let r_4 = generateView()
+		r_4.pin(.width, to: 50)
+		r_4.pin(.height, to: 50)
+		r_4.pin(.leading, toView: top_1, toAnchor: .centerX, margin: 0.25, relative:true)
+		r_4.pin(.top, toView: top_1, toAnchor: .centerY, margin: 0.25, relative:true)
+		
+		let r_5 = generateView()
+		r_5.pin(.height, to: 0.5, ofView: view)
+		r_5.pin(.leading, toView: view, margin: 0.05, relative:true)
+		r_5.pin(.top, toView: view, margin: 0.05, relative:true)
+		r_5.pin(.trailing, toView: view, margin: 0.05, relative:true)
+
+		*/
+		
+		/**
+		* Stacked inset views
+		* Demonstrating how to stack and inset multiple views
+
+		let c_1 = generateView()
+		c_1.pin(.top, toView: view)
+		c_1.pin(.trailing, toView: view)
+		c_1.pin(.bottom, toView: view)
+		c_1.pin(.leading, toView: view)
+		
+		let c_2 = generateView()
+		c_1.addSubview(c_2)
+		c_2.pin(.top, toView: c_1, margin: 0.1, relative: true)
+		c_2.pin(.trailing, toView: c_1, margin: 0.1, relative: true)
+		c_2.pin(.bottom, toView: c_1, margin: 0.1, relative: true)
+		c_2.pin(.leading, toView: c_1, margin: 0.1, relative: true)
+		
+		let c_3 = generateView()
+		c_2.addSubview(c_3)
+		c_3.pin(.top, toView: c_2, margin: 0.1, relative: true)
+		c_3.pin(.trailing, toView: c_2, margin: 0.1, relative: true)
+		c_3.pin(.bottom, toView: c_2, margin: 0.1, relative: true)
+		c_3.pin(.leading, toView: c_2, margin: 0.1, relative: true)
+		
+		let c_4 = generateView()
+		c_3.addSubview(c_4)
+		c_4.pin(.top, toView: c_3, margin: 0.1, relative: true)
+		c_4.pin(.trailing, toView: c_3, margin: 0.1, relative: true)
+		c_4.pin(.bottom, toView: c_3, margin: 0.1, relative: true)
+		c_4.pin(.leading, toView: c_3, margin: 0.1, relative: true)
 		*/
 	}
 	

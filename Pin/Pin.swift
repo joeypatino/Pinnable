@@ -50,6 +50,8 @@ public enum PinDimension {
 * sibling UIView's
 */
 public enum PinEdge {
+	case centerX
+	case centerY
 	case leading
 	case trailing
 	case top
@@ -70,6 +72,10 @@ public enum PinEdge {
 			return .trailing
 		case .trailing:
 			return .leading
+		case .centerX:
+			return .centerX
+		case .centerY:
+			return .centerY
 		}
 	}
 	
@@ -84,6 +90,10 @@ public enum PinEdge {
 			return .leading
 		case .trailing:
 			return .trailing
+		case .centerX:
+			return .centerX
+		case .centerY:
+			return .centerY
 		}
 	}
 	
@@ -97,6 +107,10 @@ public enum PinEdge {
 		case .bottom, .top:
 			return .y
 		case .leading, .trailing:
+			return .x
+		case .centerY:
+			return .y
+		case .centerX:
 			return .x
 		}
 	}
@@ -202,8 +216,8 @@ public extension UIView {
 		parentview.addSubview(marginView)
 		
 		// pin the width or height as needed..
-		marginView.pin((edge.axis == .x) ? .height : .width, to: 2)
-		
+		marginView.pin((edge.axis == .x) ? .height : .width, to: 1)
+
 		// center in the parent view..
 		marginView.pin(onAxis: edge.axis == .y ? .x : .y, inView: parentview)
 		
@@ -215,25 +229,23 @@ public extension UIView {
 			// setup the fixed dimension
 			marginView.pin((edge.axis == .x) ? .width : .height, to: margin)
 		}
-		
+
 		// pin the margin to the view
 		marginView.pin(edge, toView: view, toAnchor:anchorPoint)
+
 		
-		// pin ourselves to the margin..
-		pin(edge, toView: marginView, toAnchor:(anchor == nil) ? anchorPoint.inverted : anchor)
-	}
-	
-	private func pin(_ edge:PinEdge, toView view:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat = 0) {
-		assert(superview != nil, "view must have a superview")
-		assert(view.isDescendant(of: superview!), "view must be a decendant of the view")
+		// when x or y center second anchor point, we can not fix
+		// the margin view like this..
+		let forceAnchor = anchorPoint == .centerX || anchorPoint == .centerY
 		
-		let anchor = anchor ?? edge
-		let parentview = superview!
-		let constraint = NSLayoutConstraint(item: self, attribute: edge.attribute,
-		                                    relatedBy: .equal,
-		                                    toItem: view, attribute: anchor.attribute,
-		                                    multiplier: 1.0, constant: margin)
-		parentview.addConstraint(constraint)
+		if forceAnchor {
+			pin(edge, toView: marginView, toAnchor:edge.inverted)
+		}
+		else {
+			
+			// pin ourselves to the margin..
+			pin(edge, toView: marginView, toAnchor:(anchor == nil) ? anchorPoint.inverted : anchor)
+		}
 	}
 	
 	public func pin(onAxis:PinAxis, inView view:UIView, withOffset offset:CGFloat = 0) {
@@ -261,6 +273,20 @@ public extension UIView {
 		                                    toItem: nil, attribute: .notAnAttribute,
 		                                    multiplier: 1.0, constant: value)
 		addConstraint(constraint)
+	}
+
+	
+	private func pin(_ edge:PinEdge, toView view:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat = 0) {
+		assert(superview != nil, "view must have a superview")
+		assert(view.isDescendant(of: superview!), "view must be a decendant of the view")
+		
+		let anchor = anchor ?? edge
+		let parentview = superview!
+		let constraint = NSLayoutConstraint(item: self, attribute: edge.attribute,
+		                                    relatedBy: .equal,
+		                                    toItem: view, attribute: anchor.attribute,
+		                                    multiplier: 1.0, constant: margin)
+		parentview.addConstraint(constraint)
 	}
 }
 
