@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0F0F6D5D3DF7BBBC4F0700C4 /* Pods_PinTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEDC0AE53D0DC46EC19393C2 /* Pods_PinTests.framework */; };
-		D4A393AD1F82F78B000EFF13 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A393AC1F82F78B000EFF13 /* Extensions.swift */; };
 		D4AE656E1F83A3D80040EF9E /* MarginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AE656D1F83A3D80040EF9E /* MarginView.swift */; };
 		D4AE656F1F83A3F50040EF9E /* Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AE656C1F83A3CC0040EF9E /* Pin.swift */; };
+		D4AE65711F83BB2F0040EF9E /* UIView+Pin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AE65701F83BB2F0040EF9E /* UIView+Pin.swift */; };
 		D4BB13D11F82AAD60079BB6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BB13D01F82AAD60079BB6E /* AppDelegate.swift */; };
 		D4BB13D31F82AAD60079BB6E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BB13D21F82AAD60079BB6E /* ViewController.swift */; };
 		D4BB13D61F82AAD60079BB6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4BB13D41F82AAD60079BB6E /* Main.storyboard */; };
@@ -35,9 +35,9 @@
 		7CF1CEDC077AB85D18D4A456 /* Pods-PinTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PinTests/Pods-PinTests.release.xcconfig"; sourceTree = "<group>"; };
 		7EB0005191B47FC0AF38ABB6 /* Pods-PinTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PinTests/Pods-PinTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C9C4F2B76C4BD103C493B37B /* Pods-Pin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pin.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pin/Pods-Pin.release.xcconfig"; sourceTree = "<group>"; };
-		D4A393AC1F82F78B000EFF13 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D4AE656C1F83A3CC0040EF9E /* Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pin.swift; sourceTree = "<group>"; };
 		D4AE656D1F83A3D80040EF9E /* MarginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarginView.swift; sourceTree = "<group>"; };
+		D4AE65701F83BB2F0040EF9E /* UIView+Pin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Pin.swift"; sourceTree = "<group>"; };
 		D4BB13CD1F82AAD60079BB6E /* Pin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BB13D01F82AAD60079BB6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D4BB13D21F82AAD60079BB6E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -95,6 +95,7 @@
 			children = (
 				D4AE656C1F83A3CC0040EF9E /* Pin.swift */,
 				D4AE656D1F83A3D80040EF9E /* MarginView.swift */,
+				D4AE65701F83BB2F0040EF9E /* UIView+Pin.swift */,
 			);
 			path = Pin;
 			sourceTree = "<group>";
@@ -129,7 +130,6 @@
 				D4BB13D71F82AAD60079BB6E /* Assets.xcassets */,
 				D4BB13D91F82AAD60079BB6E /* LaunchScreen.storyboard */,
 				D4BB13DC1F82AAD60079BB6E /* Info.plist */,
-				D4A393AC1F82F78B000EFF13 /* Extensions.swift */,
 			);
 			path = Pin;
 			sourceTree = "<group>";
@@ -352,10 +352,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4AE656F1F83A3F50040EF9E /* Pin.swift in Sources */,
+				D4AE65711F83BB2F0040EF9E /* UIView+Pin.swift in Sources */,
 				D4AE656E1F83A3D80040EF9E /* MarginView.swift in Sources */,
 				D4BB13D31F82AAD60079BB6E /* ViewController.swift in Sources */,
 				D4BB13D11F82AAD60079BB6E /* AppDelegate.swift in Sources */,
-				D4A393AD1F82F78B000EFF13 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

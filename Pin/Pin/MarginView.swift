@@ -9,21 +9,22 @@
 import UIKit
 
 /**
-* Private UIView used when creating layout margins
-*
-* Funky KVO is being used in order to track when the view
-* that the margin is applied to is removed from the screen
-* when this occurs, we want to make sure that we remove the
-* margin view as well so we don't pollute the parent view
-*
-* considerations:: The margin view must be a sibling of the
-* view that it is being used for. This is enforced in the Pin
-* methods already but should be noted.
-*
-* This class could also fail if the subviews are removed
-* from screen for any reason. If this is needed, then the
-* views must be configured again when they are added back
-* as subviews by using the Pin methods
+Internal view for creating layout margins
+
+Funky KVO is being used in order to track when the view
+that the margin is applied to is removed from the screen
+when this occurs, we want to make sure that we remove the
+margin view as well so we don't pollute the parent view
+
+- considerations:
+The margin view must be a sibling of the
+view that it is being used for. This is enforced in the Pin
+methods already but should be noted.
+
+This class could also fail if the subviews are removed
+from screen for any reason. If this is needed, then the
+views must be configured again when they are added back
+as subviews by using the Pin methods
 */
 internal class MarginView : UIView {
 	
