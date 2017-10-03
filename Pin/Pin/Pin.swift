@@ -28,12 +28,21 @@ public protocol Pin {
 }
 
 
+public protocol PinAttribute {
+	associatedtype AttributeType
+	var attribute:NSLayoutAttribute {get}
+	var inverted:AttributeType {get}
+	var axis:PinAxis {get}
+}
+
 /**
 * A Pin for a views axis.
 */
-public enum PinAxis {
+public enum PinAxis : PinAttribute {
+	public typealias AttributeType = PinAxis
 	case x
 	case y
+	case none
 	
 	// the NSLayout attribute that relates to this PinAxis
 	public var attribute:NSLayoutAttribute {
@@ -42,16 +51,35 @@ public enum PinAxis {
 			return .centerX
 		case .y:
 			return .centerY
+		case .none:
+			return .notAnAttribute
 		}
+	}
+	
+	public var inverted: PinAxis {
+		switch self {
+		case .x:
+			return .y
+		case .y:
+			return .x
+		case .none:
+			return .none
+		}
+	}
+	
+	public var axis: PinAxis {
+		return self
 	}
 }
 
 /**
 * A Pin for a views size.
 */
-public enum PinDimension {
+public enum PinDimension : PinAttribute {
+	public typealias AttributeType = PinDimension
 	case width
 	case height
+	case none
 	
 	// the NSLayout attribute that relates to this PinDimension
 	public var attribute:NSLayoutAttribute {
@@ -60,6 +88,8 @@ public enum PinDimension {
 			return .width
 		case .height:
 			return .height
+		case .none:
+			return .notAnAttribute
 		}
 	}
 	
@@ -72,6 +102,19 @@ public enum PinDimension {
 			return .height
 		case .height:
 			return .width
+		case .none:
+			return .none
+		}
+	}
+	
+	public var axis: PinAxis {
+		switch self {
+		case .width:
+			return .x
+		case .height:
+			return .y
+		case .none:
+			return .none
 		}
 	}
 }
@@ -81,7 +124,8 @@ public enum PinDimension {
 * A Pin for edges. Used when aligning UIViews to other
 * sibling UIView's
 */
-public enum PinEdge {
+public enum PinEdge : PinAttribute {
+	public typealias AttributeType = PinEdge
 	case centerX
 	case centerY
 	case leading

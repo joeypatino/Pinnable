@@ -21,8 +21,7 @@ class ViewController: UIViewController {
 		/**
 		* Stacked inset views
 		* Demonstrating how to stack and inset multiple views
-		*/
-		
+
 		let c_1 = generateView()
 		c_1.pin(edge:.top, toView: view)
 		c_1.pin(edge:.trailing, toView: view)
@@ -49,13 +48,14 @@ class ViewController: UIViewController {
 		c_4.pin(edge:.trailing, toView: c_3, margin: 0.1, relative: true)
 		c_4.pin(edge:.bottom, toView: c_3, margin: 0.1, relative: true)
 		c_4.pin(edge:.leading, toView: c_3, margin: 0.1, relative: true)
-
+		*/
+		
 		/**
 		* Relative Margins
 		* Creates and adds views using margins that are relative to
 		* the size of their superview. Relative margin values are
 		* expressed in percentage of the superview's bounds.
-		*/
+
 		let top_1 = generateView()
 		top_1.pin(.width, to: 40)
 		top_1.pin(.height, to: 40)
@@ -79,13 +79,12 @@ class ViewController: UIViewController {
 		trail_1.pin(.height, to: 40)
 		trail_1.pin(edge:.trailing, toView: view, margin: 0.20, relative:true)
 		trail_1.pin(toAxis: .y, inView: view)
-
+		*/
 		
 		/**
 		* Absolute Margins
 		* Create and add views using absolute margins. Margins are expressed
 		* in points..
-		*/
 
 		let top_2 = generateView()
 		top_2.pin(.width, to: 20)
@@ -110,12 +109,13 @@ class ViewController: UIViewController {
 		trail_2.pin(.height, to: 80)
 		trail_2.pin(edge:.trailing, toView: view, margin: 50)
 		trail_2.pin(toAxis: .y, inView: view)
-
+		*/
+		
 		/**
 		* Pinned to random views
 		* Demonstrating how to pin to arbitrary views and
 		* to arbitrary view edges or axis'
-		*/
+
 
 		let r_1 = generateView()
 		r_1.pin(.width, to: 50)
@@ -158,14 +158,13 @@ class ViewController: UIViewController {
 		r_7.pin(.height, to: 50)
 		r_7.pin(edge:.leading, toView: top_1, toAnchor: .centerX, margin: 0.25, relative:true)
 		r_7.pin(edge:.top, toView: top_1, toAnchor: .centerY, margin: 0.25, relative:true)
+		*/
 
-		
 		// Aspect ratios
 		let r_8 = generateView()
 		r_8.pin(.width, to: 0.5, ofView: view, aspectRatio: 16.0/9.0)
-		r_8.pin(edge:.centerX, toView: view, toAnchor: .centerX, margin: 0)
-		r_8.pin(edge:.bottom, toView: view, margin: 100)
-
+		r_8.pin(edge: .centerX, toView: view, toAnchor: .centerX, margin: 0)
+		r_8.pin(edge:.centerY, toView: view, margin: 0.5, relative:true)
 	}
 	
 	private func generateView() -> UIView {
