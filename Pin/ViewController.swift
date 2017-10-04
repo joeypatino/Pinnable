@@ -164,8 +164,8 @@ class ViewController: UIViewController {
 		// Aspect ratios
 		let r_8 = generateView()
 		generatedPins.append(r_8.pin(dimension: .width, to: 0.5, relativeTo: view, aspectRatio: 16.0/9.0))
-		generatedPins.append(r_8.pin(edge: .top, toView: view, toAnchor: .top, margin: 0.5, relative:true))
-		generatedPins.append(r_8.pin(edge:.centerY, toView: view, margin: 0.5, relative:true))
+		generatedPins.append(r_8.pin(edge: .bottom, toView: view, toAnchor: .bottom, margin: 0.15, relative:true))
+		generatedPins.append(r_8.pin(toAxis: .x, inView: view))
 	}
 	
 	private func generateView() -> UIView {
@@ -177,8 +177,7 @@ class ViewController: UIViewController {
 	}
 	
 	/**
-	* Add a gesture to test out removing the view and ensuring
-	* that the margin views (IN RED) are also removed and dealloc'd
+	* Add a gesture to test actions on the Pins
 	*/
 	private func addGesture(toView view: UIView) {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTouched))

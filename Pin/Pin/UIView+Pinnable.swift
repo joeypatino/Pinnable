@@ -131,7 +131,7 @@ fileprivate extension Pinnable where Self : UIView {
 		}
 		else {
 			if relative {
-				print("PinInvalidParameterError - relative margins do not work when pinned to a center point. using a fixed margin instead")
+				print("PinInvalidParameterError - relative margins do not work when pinned to a center point. call `func pin(toAxis:PinAxis, inView view:UIView, offset:CGFloat) -> Pin` instead")
 			}
 			generatedPins.append(_pin(edge: edge, toView: parentview,
 			                          ancestorView: parentview, toAnchor:anchorPoint.inverted,
