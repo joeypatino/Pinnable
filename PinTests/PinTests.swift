@@ -21,10 +21,21 @@ class PinTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+	func testMethod() {
+		let a = Pin(type: .axis)
+		print(a)
+		
+		switch a.type {
+		case .axis:
+			print("is axis")
+		case .dimension:
+			print("is dimension")
+		case .edge:
+			print("is edge")
+		}
+		
+		print(a.value)
+	}
     
     func testPerformanceExample() {
         // This is an example of a performance test case.

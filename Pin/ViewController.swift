@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  Pin
+//  Pinnable
 //
 //  Created by Joey Patino on 10/2/17.
 //  Copyright © 2017 Joseph Patino. All rights reserved.
@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 	
+	var generatedPins:[Pin] = []
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -162,20 +163,32 @@ class ViewController: UIViewController {
 
 		// Aspect ratios
 		let r_8 = generateView()
-		r_8.pin(.width, to: 0.5, ofView: view, aspectRatio: 16.0/9.0)
-		r_8.pin(edge: .centerX, toView: view, toAnchor: .centerX, margin: 0)
-		r_8.pin(edge:.centerY, toView: view, margin: 0.5, relative:true)
+		generatedPins.append(r_8.pin(dimension: .width, to: 0.5, relativeTo: view, aspectRatio: 16.0/9.0))
+		generatedPins.append(r_8.pin(edge: .top, toView: view, toAnchor: .top, margin: 0.5, relative:true))
+		generatedPins.append(r_8.pin(edge:.centerY, toView: view, margin: 0.5, relative:true))
 	}
 	
 	private func generateView() -> UIView {
 		let randomView = UIView()
+		addGesture(toView: randomView)
 		randomView.backgroundColor = UIColor.random()
 		view.addSubview(randomView)
 		return randomView
 	}
 	
+	/**
+	* Add a gesture to test out removing the view and ensuring
+	* that the margin views (IN RED) are also removed and dealloc'd
+	*/
+	private func addGesture(toView view: UIView) {
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTouched))
+		view.addGestureRecognizer(tapGesture)
+	}
+	
 	@objc private func viewTouched(gesture:UITapGestureRecognizer) {
-		gesture.view?.removeFromSuperview()
+		for pin in generatedPins {
+			pin.isActive = !pin.isActive
+		}
 	}
 }
 

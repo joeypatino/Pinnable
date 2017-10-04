@@ -1,6 +1,6 @@
 //
 //  MarginView.swift
-//  Pin
+//  Pinnable
 //
 //  Created by Joey Patino on 10/3/17.
 //  Copyright © 2017 Joseph Patino. All rights reserved.
@@ -18,13 +18,13 @@ margin view as well so we don't pollute the parent view
 
 - considerations:
 The margin view must be a sibling of the
-view that it is being used for. This is enforced in the Pin
+view that it is being used for. This is enforced in the Pinnable
 methods already but should be noted.
 
 This class could also fail if the subviews are removed
 from screen for any reason. If this is needed, then the
 views must be configured again when they are added back
-as subviews by using the Pin methods
+as subviews by using the Pinnable methods
 */
 internal class MarginView : UIView {
 	

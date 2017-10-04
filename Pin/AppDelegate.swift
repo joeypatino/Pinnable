@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Pin
+//  Pinnable
 //
 //  Created by Joey Patino on 10/2/17.
 //  Copyright © 2017 Joseph Patino. All rights reserved.
