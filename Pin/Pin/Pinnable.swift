@@ -10,15 +10,9 @@ import UIKit
 
 /**
 Pinnable protocol. Used to constrain elements together.
-
 - author:
 - version:
-	0.1.2
-- returns:
-- throws:
-
-While this currently is only configured for UIView constraints,
-it could technically be extended for CAConstraints as well.
+	0.1.3
 */
 public protocol Pinnable {
 	
@@ -30,28 +24,10 @@ public protocol Pinnable {
 /**
 what is a pin?
 
-a pin is a collection of layout constraints and associated properties
+a Pin is a collection of layout constraints and associated properties
 that define the positioning or size of a view, possibly in relation to
-another view or itself. the pin object lets you control pins after they
+another view or itself. the pin object lets you control Pins after they
 have been created.
-
-ex.
-pin viewA.leading to viewB.trailing
-the pin would contain a single constraint between viewA and viewB
-
-ex.
-pin viewA.leading to viewB.trailing, with a margin of 20px
-the pin would contain a single constraint between viewA and viewB
-
-
-ex.
-pin viewA.leading to viewB.trailing, with a margin of 20% of their superview.
-
-the pin would contain 3 constraints:
-a constraint from viewA.leading to marginView.trailing
-a constraint of marginViews width to 20% of the superviews width
-a constraint from marginView.leading to viewB.trailing
-
 */
 
 public class Pin {
@@ -65,7 +41,7 @@ public class Pin {
 			? constraint(forAttribute: type)?.multiplier ?? 0
 			: constraint(forAttribute: type)?.constant ?? 0
 	}
-	public var constraints:[NSLayoutConstraint] {
+	private var constraints:[NSLayoutConstraint] {
 		var pinConstraints = associatedPins.flatMap({return $0._constraints})
 		pinConstraints.append(contentsOf: _constraints)
 		return pinConstraints
@@ -137,7 +113,7 @@ public class Pin {
 		}
 		return nil
 	}
-	
+
 	private func constraint(forAttribute:PinType) -> NSLayoutConstraint? {
 
 		switch forAttribute {
@@ -170,23 +146,36 @@ public enum PinType {
 	case dimension
 	case edge
 }
-
-
 public protocol PinAttribute {
+
+	/**
+	* the NSLayoutAttribute that this attribute corresponds with
+	*/
 	var attribute:NSLayoutAttribute {get}
+	
+	/**
+	* the inverse or opposite attribute of this attribute
+	*
+	* i.e
+	* 		leading <-> trailing
+	* or
+	* 		top <-> bottom
+	* or
+	* 		x <-> y
+	* 		width <-> height
+	*/
 	var inverted:Self {get}
+
+	/**
+	* The 'axis' of this attribute.
+	*/
 	var axis:PinAxis {get}
 }
-
-/**
-* A Pin for a views axis.
-*/
 public enum PinAxis : String, PinAttribute {
 	case x = "x"
 	case y = "y"
 	case none = "none"
-	
-	// the NSLayout attribute that relates to this PinAxis
+
 	public var attribute:NSLayoutAttribute {
 		switch self {
 		case .x:
@@ -213,16 +202,11 @@ public enum PinAxis : String, PinAttribute {
 		return self
 	}
 }
-
-/**
-* A Pin for a views size.
-*/
 public enum PinDimension : String, PinAttribute {
 	case width = "width"
 	case height = "height"
 	case none = "none"
 	
-	// the NSLayout attribute that relates to this PinDimension
 	public var attribute:NSLayoutAttribute {
 		switch self {
 		case .width:
@@ -234,9 +218,6 @@ public enum PinDimension : String, PinAttribute {
 		}
 	}
 	
-	/**
-	* An inversion of this PinDimension.
-	*/
 	public var inverted:PinDimension {
 		switch self {
 		case .width:
@@ -259,12 +240,6 @@ public enum PinDimension : String, PinAttribute {
 		}
 	}
 }
-
-
-/**
-* A Pin for edges. Used when aligning UIViews to other
-* sibling UIView's
-*/
 public enum PinEdge : String, PinAttribute {
 	case centerX = "centerX"
 	case centerY = "centerY"
@@ -273,11 +248,6 @@ public enum PinEdge : String, PinAttribute {
 	case top = "top"
 	case bottom = "bottom"
 	
-	/** An inversion of this PinEdge.
-	* 		leading <-> trailing
-	* or
-	* 		top <-> bottom
-	*/
 	public var inverted:PinEdge {
 		switch self {
 		case .bottom:
@@ -294,8 +264,7 @@ public enum PinEdge : String, PinAttribute {
 			return .centerY
 		}
 	}
-	
-	// the NSLayout attribute that relates to this PinEdge
+
 	public var attribute:NSLayoutAttribute {
 		switch self {
 		case .bottom:
@@ -312,12 +281,7 @@ public enum PinEdge : String, PinAttribute {
 			return .centerY
 		}
 	}
-	
-	/**
-	* The 'axis' of this PinEdge. When the PinEdge is
-	* leading or trailing, the axis is horizontal <---->
-	* otherwise vertical
-	*/
+
 	public var axis:PinAxis {
 		switch self {
 		case .bottom, .top:
