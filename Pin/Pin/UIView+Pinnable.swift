@@ -107,7 +107,6 @@ fileprivate extension Pinnable where Self : UIView {
 		let useRelativeMargin = anchorPoint != .centerX && anchorPoint != .centerY
 
 		if useRelativeMargin {
-//			assert(relative && margin > 0.0, "PinInvalidParameterError - relative margin can not be zero. use a fixed margin instead")
 
 			let marginView = MarginView(forView: self)
 			marginView.backgroundColor = debugMargin ? .red : .clear
@@ -137,7 +136,7 @@ fileprivate extension Pinnable where Self : UIView {
 			if relative {
 				print("PinInvalidParameterError - relative margins do not work when pinned to a center point. call `func pin(toAxis:PinAxis, inView view:UIView, offset:CGFloat) -> Pin` instead")
 			}
-			generatedPins.append(_pin(edge: edge, toView: parentview,
+			generatedPins.append(_pin(edge: edge, toView: view,
 			                          ancestorView: parentview, toAnchor:anchorPoint.inverted,
 			                          margin:margin))
 		}
