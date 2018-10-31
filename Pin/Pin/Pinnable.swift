@@ -26,14 +26,14 @@ what is a pin?
 
 a Pin is a collection of layout constraints and associated properties
 that define the positioning or size of a view, possibly in relation to
-another view or itself. the pin object lets you control Pins after they
-have been created.
+another view or itself. the pin object lets you control Pins the layout
+after it has been setup.
 */
 
 public class Pin {
 
 	public let type:PinType
-	public let adjustableAxis:PinAxis
+	public let axis:PinAxis
 	public let isRelative:Bool
 
 	public var value:CGFloat {
@@ -41,73 +41,73 @@ public class Pin {
 			? constraint(forAttribute: type)?.multiplier ?? 0
 			: constraint(forAttribute: type)?.constant ?? 0
 	}
-	private var constraints:[NSLayoutConstraint] {
-		var pinConstraints = associatedPins.flatMap({return $0._constraints})
-		pinConstraints.append(contentsOf: _constraints)
-		return pinConstraints
+	public var layoutConstraints:[NSLayoutConstraint] {
+		var constraints = children.flatMap({return $0.constraints})
+		constraints.append(contentsOf: self.constraints)
+		return constraints
 	}
 	public var isActive:Bool = true {
 		didSet {
 			
-			constraints.forEach({
+			layoutConstraints.forEach({
 				$0.isActive = isActive
 			})
 		}
 	}
-	private var associatedPins:[Pin] = []
-	private var _constraints:[NSLayoutConstraint] = []
+	private var children:[Pin] = []
+	private var constraints:[NSLayoutConstraint] = []
 	
-	public init(edge:PinEdge, pins:[Pin] = [], constraints:[NSLayoutConstraint] = [], isRelativePin:Bool = false) {
+	public init(edge:PinEdge, pins:[Pin] = [], constraints:[NSLayoutConstraint] = [], isRelative:Bool = false) {
 		self.type = .edge
-		self.adjustableAxis = edge.axis
-		self.associatedPins = pins
-		self._constraints = constraints
-		self.isRelative = isRelativePin
+		self.axis = edge.axis
+		self.children = pins
+		self.constraints = constraints
+		self.isRelative = isRelative
 	}
 	
-	public init(dimension:PinDimension, pins:[Pin] = [], constraints:[NSLayoutConstraint] = [], isRelativePin:Bool = false) {
+	public init(dimension:PinDimension, pins:[Pin] = [], constraints:[NSLayoutConstraint] = [], isRelative:Bool = false) {
 		self.type = .dimension
-		self.adjustableAxis = dimension.axis
-		self.associatedPins = pins
-		self._constraints = constraints
-		self.isRelative = isRelativePin
+		self.axis = dimension.axis
+		self.children = pins
+		self.constraints = constraints
+		self.isRelative = isRelative
 	}
 	
-	public init(axis:PinAxis, pins:[Pin] = [], constraints:[NSLayoutConstraint] = [], isRelativePin:Bool = false) {
+	public init(axis:PinAxis, pins:[Pin] = [], constraints:[NSLayoutConstraint] = [], isRelative:Bool = false) {
 		self.type = .axis
-		self.adjustableAxis = axis
-		self.associatedPins = pins
-		self._constraints = constraints
-		self.isRelative = isRelativePin
+		self.axis = axis
+		self.children = pins
+		self.constraints = constraints
+		self.isRelative = isRelative
 	}
 	
 	public func set(value:CGFloat) {
-		if isRelative {
-			if let oldConstraint = constraint(forAttribute: type) {
-				if let pin = drop(constraint: oldConstraint){
-					let newConstraint = oldConstraint.setMultiplier(multiplier: value)
-					pin.add(constraint: newConstraint)
-				}
-			}
-		}
-		else {
+		guard isRelative else {
 			constraint(forAttribute: type)?.constant = value
+			return
 		}
+		guard
+			let oldConstraint = constraint(forAttribute: type),
+			let pin = drop(constraint: oldConstraint)
+			else { return }
+
+		let newConstraint = oldConstraint.setMultiplier(multiplier: value)
+		pin.add(constraint: newConstraint)
 	}
 	
 	private func add(constraint:NSLayoutConstraint) {
-		_constraints.append(constraint)
+		constraints.append(constraint)
 	}
 	
 	@discardableResult
 	private func drop(constraint:NSLayoutConstraint) -> Pin? {
-		if let idx = _constraints.index(of: constraint) {
-			_constraints.remove(at: idx)
+		if let idx = constraints.index(of: constraint) {
+			constraints.remove(at: idx)
 			return self
 		}
-		for pin in associatedPins {
-			if let idx = pin._constraints.index(of: constraint) {
-				pin._constraints.remove(at: idx)
+		for pin in children {
+			if let idx = pin.constraints.index(of: constraint) {
+				pin.constraints.remove(at: idx)
 				return pin
 			}
 		}
@@ -118,7 +118,7 @@ public class Pin {
 
 		switch forAttribute {
 		case .dimension:
-			return constraints.filter({c in
+			return layoutConstraints.filter({c in
 				guard
 					let first = c.firstItem as? UIView
 					else {return false}
@@ -131,11 +131,11 @@ public class Pin {
 				return true
 			}).first
 		case .axis:
-			return constraints.first
+			return layoutConstraints.first
 		case .edge:
-			let c = constraints.count == 1
-				? constraints.first
-				: constraints.filter({$0.firstAttribute == ((adjustableAxis == .x) ? .width : .height)}).first
+			let c = layoutConstraints.count == 1
+				? layoutConstraints.first
+				: layoutConstraints.filter({$0.firstAttribute == ((axis == .x) ? .width : .height)}).first
 			return c
 		}
 	}

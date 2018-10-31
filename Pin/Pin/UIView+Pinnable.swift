@@ -104,50 +104,70 @@ fileprivate extension Pinnable where Self : UIView {
 		
 		var generatedPins:[Pin] = []
 
-		let useRelativeMargin = anchorPoint != .centerX && anchorPoint != .centerY
+		let nonRelativeEdges:[PinEdge] = [.centerX, .centerY]
+		let useRelativeMargin = !nonRelativeEdges.contains(anchorPoint)
 
 		if useRelativeMargin {
 
 			let marginView = MarginView(forView: self)
 			marginView.backgroundColor = debugMargin ? .red : .clear
 			parentview.addSubview(marginView)
-			
-			// pin the width or height as needed..
-			generatedPins.append(marginView._pin(dimension:(edge.axis == .x) ? .height : .width, to: 1.0))
-			
-			// center in the parent view..
-			generatedPins.append(marginView._pin(toAxis: edge.axis == .y ? .x : .y, inView: parentview))
-			
-			// setup the relative or fixed dimension
-			relative
-				? generatedPins.append(marginView._pin(dimension:(edge.axis == .x) ? .width : .height, to: margin, relativeTo:parentview))
-				: generatedPins.append(marginView._pin(dimension:(edge.axis == .x) ? .width : .height, to: margin))
-			
-			// pin the margin to the view
-			generatedPins.append(marginView._pin(edge:edge, toView: view, ancestorView: parentview, toAnchor:anchorPoint, margin:0))
 
+			// in order to prevent invalid constraints when the Pin is disabled, we apply a
+			// general set of low priority constraints. The view will fall back to these constraints
+			// when the pin is disabled.
+			if #available(iOS 9.0, *) {
+				let top = marginView.topAnchor.constraint(equalTo: parentview.topAnchor)
+				let leading = marginView.leadingAnchor.constraint(equalTo: parentview.leadingAnchor)
+				let width = marginView.widthAnchor.constraint(equalToConstant: 0)
+				let height = marginView.heightAnchor.constraint(equalToConstant: 0)
+				[top, leading, width, height].forEach { $0.priority = UILayoutPriorityDefaultLow; $0.isActive = true }
+			}
+
+			// pin the width or height as needed..
+			let fixedDimension:PinDimension = (edge.axis == .x) ? .height : .width
+			generatedPins.append(marginView._pin(dimension: fixedDimension, to: 1.0))
+
+			// center in the parent view..
+            generatedPins.append(marginView._pin(edge: edge.axis == .y ? .centerX : .centerY, toView: self))
+
+			// setup the relative or fixed dimension
+			let dimensionToPin:PinDimension = (edge.axis == .x) ? .width : .height
+			relative
+				? generatedPins.append(marginView._pin(dimension: dimensionToPin, to: margin, relativeTo:parentview))
+				: generatedPins.append(marginView._pin(dimension: dimensionToPin, to: margin))
+
+            let isTopDownPin = edge == .top && anchorPoint == .bottom
+            let isLeftRightPin = edge == .leading && anchorPoint == .trailing
+
+			// pin the margin to the view
+			generatedPins.append(marginView._pin(edge: edge,
+                                                 toView: view,
+                                                 ancestorView: parentview,
+                                                 toAnchor: anchorPoint,
+                                                 margin:0))
 			// pin the view to the margin..
 			generatedPins.append(_pin(edge: edge, toView: marginView,
-			                          ancestorView: parentview, toAnchor:anchorPoint.inverted,
+                                      ancestorView: parentview,
+									  toAnchor: (isTopDownPin || isLeftRightPin) ? anchorPoint : anchorPoint.inverted,
 			                          margin:0))
-
 		}
 		else {
 			if relative {
 				print("PinInvalidParameterError - relative margins do not work when pinned to a center point. call `func pin(toAxis:PinAxis, inView view:UIView, offset:CGFloat) -> Pin` instead")
 			}
 			generatedPins.append(_pin(edge: edge, toView: view,
-			                          ancestorView: parentview, toAnchor:anchorPoint.inverted,
+                                      ancestorView: parentview, toAnchor:anchorPoint.inverted,
 			                          margin:margin))
 		}
 
-		return Pin(edge:edge, pins:generatedPins, isRelativePin:useRelativeMargin)
+		return Pin(edge:edge, pins:generatedPins, isRelative:useRelativeMargin)
 	}
 	
 	@discardableResult
 	fileprivate func _pin(toAxis:PinAxis, inView view:UIView, offset:CGFloat = 0) -> Pin {
-		let constraint = view._constrain(toAxis, ofView: self,
-		                                 to: toAxis, ofView: view,
+		let constraint = view.constraint(from: toAxis, on: self,
+		                                 to: toAxis, on: view,
 		                                 constant: offset, multiplier: 1.0)
 		
 		return Pin(axis: toAxis, constraints:[constraint])
@@ -163,40 +183,38 @@ fileprivate extension Pinnable where Self : UIView {
 		let constrainingView = isRelative ? view : self
 
 		var constraints:[NSLayoutConstraint] = []
-		if let constraint1 = constrainingView?._constrain(dimension, ofView: self,
-		                                                  to: toItem, ofView: view,
+		if let constraint1 = constrainingView?.constraint(from: dimension, on: self,
+		                                                  to: toItem, on: view,
 		                                                  constant: constant, multiplier: multiplier){
 			constraints.append(constraint1)
 		}
 		
 		if let aspect = aspect {
-			let constraint2 = _constrain(dimension.inverted, ofView: self,
-			                             to: dimension, ofView: self,
+			let constraint2 = constraint(from: dimension.inverted, on: self,
+			                             to: dimension, on: self,
 			                             constant: 0, multiplier: (dimension == .width) ? 1/aspect : aspect)
 			constraints.append(constraint2)
 		}
 
-		return Pin(dimension: dimension, constraints:constraints, isRelativePin:isRelative)
+		return Pin(dimension: dimension, constraints:constraints, isRelative:isRelative)
 	}
 	
 	@discardableResult
-	private func _pin(edge:PinEdge, toView view:UIView, ancestorView ancestor:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat) -> Pin {
-		let constraint = ancestor._constrain(edge, ofView: self,
-		                                     to: anchor ?? edge, ofView: view,
+	fileprivate func _pin(edge:PinEdge, toView view:UIView, ancestorView ancestor:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat) -> Pin {
+		let constraint = ancestor.constraint(from: edge, on: self,
+		                                     to: anchor ?? edge, on: view,
 		                                     constant: margin, multiplier: 1.0)
-		
 		return Pin(edge: edge, constraints:[constraint])
 	}
 	
 	@discardableResult
-	private func _constrain<Attribute:PinAttribute>(_ fromAttribute:Attribute, ofView of:UIView, to toAttribute:Attribute, ofView to:UIView?, constant:CGFloat, multiplier:CGFloat = 1.0) -> NSLayoutConstraint {
-		let constraint = NSLayoutConstraint(item: of, attribute: fromAttribute.attribute,
-		                                    relatedBy: .equal,
-		                                    toItem: to, attribute: toAttribute.attribute,
-		                                    multiplier: multiplier, constant: constant)
-		addConstraint(constraint)
-		
-		return constraint
+	private func constraint<Attribute:PinAttribute>(from:Attribute, on view:UIView, to toAttribute:Attribute, on toView:UIView?, constant:CGFloat, multiplier:CGFloat = 1.0) -> NSLayoutConstraint {
+        let constraint = NSLayoutConstraint(item: view, attribute: from.attribute,
+                                            relatedBy: .equal,
+                                            toItem: toView, attribute: toAttribute.attribute,
+                                            multiplier: multiplier, constant: constant)
+        addConstraint(constraint)
+        return constraint
 	}
 }
 
