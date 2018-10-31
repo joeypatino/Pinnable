@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Pin'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'Collection of methods to help with Layout constraints'
  
   s.description      = 'Collection of functions to assist in creating NSLayoutConstraints' 
