@@ -31,7 +31,7 @@ public extension Pinnable where Self : UIView {
 	Self must already have a superview before calling this method and must be a sibling of 'view'.
 	*/
 	@discardableResult
-	public func pin(edge:PinEdge, toView view:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat = 0.0, relative:Bool = false) -> Pin {
+	func pin(edge:PinEdge, toView view:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat = 0.0, relative:Bool = false) -> Pin {
 		assert(superview != nil, "PinHierarchyException - \(self) must have a superview before being pinned")
 		assert(view.isDescendant(of: superview!), "PinHierarchyException - relativeTo view must be a sibling of \(self)")
 
@@ -58,7 +58,7 @@ public extension Pinnable where Self : UIView {
 	Self must already have a superview before calling this method and must be a sibling of 'view'.
 	*/
 	@discardableResult
-	public func pin(toAxis:PinAxis, inView view:UIView, offset:CGFloat = 0) -> Pin {
+	func pin(toAxis:PinAxis, inView view:UIView, offset:CGFloat = 0) -> Pin {
 		assert(superview != nil, "PinHierarchyException - \(self) must have a superview before being pinned")
 		assert(view.isDescendant(of: superview!), "PinHierarchyException - relativeTo view must be a sibling of \(self)")
 
@@ -84,7 +84,7 @@ public extension Pinnable where Self : UIView {
 	Self must already have a superview before calling this method and must be a sibling of 'relativeToView' if specified
 	*/
 	@discardableResult
-	public func pin(dimension:PinDimension, to value:CGFloat, relativeTo view:UIView? = nil, aspectRatio aspect:CGFloat? = nil) -> Pin {
+	func pin(dimension:PinDimension, to value:CGFloat, relativeTo view:UIView? = nil, aspectRatio aspect:CGFloat? = nil) -> Pin {
 		assert(superview != nil, "PinHierarchyException - \(self) must have a superview before being pinned")
 		if view != nil {
 			assert(view != nil && view!.isDescendant(of: superview!), "PinHierarchyException - relativeTo view must be a sibling of \(self)")
@@ -97,7 +97,7 @@ public extension Pinnable where Self : UIView {
 fileprivate extension Pinnable where Self : UIView {
 	
 	@discardableResult
-	fileprivate func _pin(edge:PinEdge, toView view:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat = 0.0, relative:Bool = false, debugMargin:Bool = false) -> Pin {
+	func _pin(edge:PinEdge, toView view:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat = 0.0, relative:Bool = false, debugMargin:Bool = false) -> Pin {
 		let anchorPoint = anchor ?? edge
 		let parentview = superview!
 		translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +121,7 @@ fileprivate extension Pinnable where Self : UIView {
 				let leading = marginView.leadingAnchor.constraint(equalTo: parentview.leadingAnchor)
 				let width = marginView.widthAnchor.constraint(equalToConstant: 0)
 				let height = marginView.heightAnchor.constraint(equalToConstant: 0)
-				[top, leading, width, height].forEach { $0.priority = UILayoutPriorityDefaultLow; $0.isActive = true }
+				[top, leading, width, height].forEach { $0.priority = UILayoutPriority.defaultLow; $0.isActive = true }
 			}
 
 			// pin the width or height as needed..
@@ -165,7 +165,7 @@ fileprivate extension Pinnable where Self : UIView {
 	}
 	
 	@discardableResult
-	fileprivate func _pin(toAxis:PinAxis, inView view:UIView, offset:CGFloat = 0) -> Pin {
+	func _pin(toAxis:PinAxis, inView view:UIView, offset:CGFloat = 0) -> Pin {
 		let constraint = view.constraint(from: toAxis, on: self,
 		                                 to: toAxis, on: view,
 		                                 constant: offset, multiplier: 1.0)
@@ -174,7 +174,7 @@ fileprivate extension Pinnable where Self : UIView {
 	}
 	
 	@discardableResult
-	fileprivate func _pin(dimension:PinDimension, to value:CGFloat, relativeTo view:UIView? = nil, aspectRatio aspect:CGFloat? = nil) -> Pin {
+	func _pin(dimension:PinDimension, to value:CGFloat, relativeTo view:UIView? = nil, aspectRatio aspect:CGFloat? = nil) -> Pin {
 
 		let isRelative = view != nil
 		let constant = isRelative ? 0 : value
@@ -200,7 +200,7 @@ fileprivate extension Pinnable where Self : UIView {
 	}
 	
 	@discardableResult
-	fileprivate func _pin(edge:PinEdge, toView view:UIView, ancestorView ancestor:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat) -> Pin {
+	func _pin(edge:PinEdge, toView view:UIView, ancestorView ancestor:UIView, toAnchor anchor:PinEdge? = nil, margin:CGFloat) -> Pin {
 		let constraint = ancestor.constraint(from: edge, on: self,
 		                                     to: anchor ?? edge, on: view,
 		                                     constant: margin, multiplier: 1.0)

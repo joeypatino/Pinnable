@@ -101,12 +101,12 @@ public class Pin {
 	
 	@discardableResult
 	private func drop(constraint:NSLayoutConstraint) -> Pin? {
-		if let idx = constraints.index(of: constraint) {
+		if let idx = constraints.firstIndex(of: constraint) {
 			constraints.remove(at: idx)
 			return self
 		}
 		for pin in children {
-			if let idx = pin.constraints.index(of: constraint) {
+			if let idx = pin.constraints.firstIndex(of: constraint) {
 				pin.constraints.remove(at: idx)
 				return pin
 			}
@@ -151,7 +151,7 @@ public protocol PinAttribute {
 	/**
 	* the NSLayoutAttribute that this attribute corresponds with
 	*/
-	var attribute:NSLayoutAttribute {get}
+	var attribute:NSLayoutConstraint.Attribute {get}
 	
 	/**
 	* the inverse or opposite attribute of this attribute
@@ -176,7 +176,7 @@ public enum PinAxis : String, PinAttribute {
 	case y = "y"
 	case none = "none"
 
-	public var attribute:NSLayoutAttribute {
+	public var attribute:NSLayoutConstraint.Attribute {
 		switch self {
 		case .x:
 			return .centerX
@@ -207,7 +207,7 @@ public enum PinDimension : String, PinAttribute {
 	case height = "height"
 	case none = "none"
 	
-	public var attribute:NSLayoutAttribute {
+	public var attribute:NSLayoutConstraint.Attribute {
 		switch self {
 		case .width:
 			return .width
@@ -265,7 +265,7 @@ public enum PinEdge : String, PinAttribute {
 		}
 	}
 
-	public var attribute:NSLayoutAttribute {
+	public var attribute:NSLayoutConstraint.Attribute {
 		switch self {
 		case .bottom:
 			return .bottom

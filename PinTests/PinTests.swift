@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import Pin
 
 class PinTests: XCTestCase {
     
@@ -20,22 +19,6 @@ class PinTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-	func testMethod() {
-		let a = Pin(type: .axis)
-		print(a)
-		
-		switch a.type {
-		case .axis:
-			print("is axis")
-		case .dimension:
-			print("is dimension")
-		case .edge:
-			print("is edge")
-		}
-		
-		print(a.value)
-	}
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
